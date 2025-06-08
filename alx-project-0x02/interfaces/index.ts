@@ -4,3 +4,9 @@ export interface CardProps {
     content: string
 
 }
+
+export interface ModalProps {
+    isOpen: boolean;
+    onSubmit: (title: string, content: string) => void
+    onClose: () => void
+}
