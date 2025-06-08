@@ -1,29 +1,11 @@
-import { useEffect, useState } from 'react'
-import UserCard from '@/components/common/UserCard'
-import { type UserProps } from '@/interfaces'
+import UserCard from '../components/common/UserCard'
+import { UserProps } from '../interfaces'
 
-export default function UsersPage() {
-    const [users, setUsers] = useState<UserProps[]>([])
-    const [loading, setLoading] = useState(true)
+interface UsersPageProps {
+    users: UserProps[]
+}
 
-    useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const response = await fetch('https://jsonplaceholder.typicode.com/users')
-                const data = await response.json()
-                setUsers(data)
-            } catch (error) {
-                console.error('Error fetching users:', error)
-            } finally {
-                setLoading(false)
-            }
-        }
-
-        fetchUsers()
-    }, [])
-
-    if (loading) return <p className="p-4">Loading...</p>
-
+export default function UsersPage({ users }: UsersPageProps) {
     return (
         <div className="p-4">
             <h1 className="text-3xl font-bold mb-6">Users</h1>
@@ -34,4 +16,25 @@ export default function UsersPage() {
             </div>
         </div>
     )
+}
+
+export async function getStaticProps() {
+    try {
+        const res = await fetch('https://jsonplaceholder.typicode.com/users')
+        const users = await res.json()
+
+        return {
+            props: {
+                users,
+            },
+            revalidate: 60, // Optional: Re-generate page every 60 seconds
+        }
+    } catch (error) {
+        console.error('Error fetching users:', error)
+        return {
+            props: {
+                users: [],
+            },
+        }
+    }
 }
