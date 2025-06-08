@@ -1,4 +1,4 @@
-import { CardProps, ModalProps } from '@/interfaces'
+import { type CardProps, type ModalProps } from '@/interfaces'
 import React, { useState } from 'react'
 
 const PostModal: React.FC<ModalProps> = ({ onClose, isOpen, onSubmit }) => {
